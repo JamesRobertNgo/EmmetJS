@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>EmmetJS</title>
+
+</head>
+
+<body>
+
+<script>
+	
+	var emmet = 'DIV > DIV';
+	
+	function getElement(emmet, startIndex) {
+		if ((startIndex == null) || (startIndex == undefined))
+			startIndex = 0;
+		
+		var beginEmmet = emmet.substring(startIndex);
+		var beginMatch = /[a-zA-Z]/.exec(beginEmmet);
+		var beginIndex = beginMatch.index;
+		
+		var endEmmet = emmet.substring(beginEmmet + 1);
+		var endMatch = /[^a-zA-Z]/.exec(endEmmet);
+		var endIndex = endMatch.index;
+		
+		return {
+			beginIndex: beginIndex,
+			endIndex: endIndex,
+			node: document.createElement(emmet.substring(beginIndex, endIndex))
+		}
+	}
+	
+	function emmetToNodes(emmet) {
+		
+		var node
+		console.log(getElement(emmet));
+	}
+	
+	console.log('emmet');
+	emmetToNodes(emmet);
+	
+</script>
+
+</body>
+
+</html>
