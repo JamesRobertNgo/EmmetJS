@@ -88,19 +88,90 @@
 			
 			case '#': // ATTRIBUTE - ID
 				
-				// TODO
+				emmet = emmet.substring(match.index + 1);
+				
+				var textMatch = /[a-zA-Z0-9_\-]+/.exec(emmet);
+				
+				emmet = emmet.substring(textMatch.index + textMatch[0].length);
+				
+				if (!textMatch)
+					break;
+				
+				for (var i = 0; i < nodes.length; i++)
+					nodes[i].setAttribute('id', textMatch[0]);
+				
+				getOperation(nodes, emmet);
 				
 				break;
 			
 			case '.': // ATTRIBUTE - CLASS
 				
-				// TODO
+				emmet = emmet.substring(match.index + 1);
+				
+				var textMatch = /[a-zA-Z0-9_\-]+/.exec(emmet);
+				
+				emmet = emmet.substring(textMatch.index + textMatch[0].length);
+				
+				if (!textMatch)
+					break;
+				
+				for (var i = 0; i < nodes.length; i++) {
+					var classValue = nodes[i].getAttribute('class');
+					
+					if (!classValue)
+						classValue = '';
+					
+					if (classValue.length > 0)
+						classValue += ' ';
+					
+					classValue += textMatch[0];
+					
+					nodes[i].setAttribute('class', classValue);
+				}
+				
+				getOperation(nodes, emmet);
 				
 				break;
 			
 			case '[': // ATTRIBUTE - CUSTOM
 				
-				// TODO
+				emmet = emmet.substring(match.index + 1);
+				
+				var textMatch = /[^\]]+/.exec(emmet);
+				
+				emmet = emmet.substring(textMatch.index + textMatch[0].length);
+				
+				if (!textMatch)
+					break;
+				
+				var str = textMatch[0].trim().replace(/\s*=\s*/g, '=');
+				
+				var attrs = str.replace(/"([^"]+)"/g, function($0, $1) {
+					console.log('REPLACE');
+					console.log($1);
+					return $1.replace(/\s/g, '_._');
+				}).split(' ');
+				
+				console.log(attrs);
+				
+				for (var i = 0; i < nodes.length; i++)
+					for (var j = 0; j < attrs.length; j++) {
+						
+						var attr = attrs[j]
+						
+						var attrParts = attr.split('=');
+						var name = attrParts[0];
+						var value = attrParts[1];
+						
+						if (value == undefined)
+							value = '';
+						
+						value = value.replace(/_\._/g, ' ');
+						
+						nodes[i].setAttribute(name, value);
+					}
+				
+				getOperation(nodes, emmet);
 				
 				break;
 			
@@ -222,7 +293,7 @@
 		return getElement(emmet);
 	}
 	
-	var emmet = '((DIV > (DIV > SPAN{SPAN}) + B{PRETTY BOLD})) + A{ANCHOR}';
+	var emmet = '((DIV#abc > (DIV#def > SPAN.THE_ONE.AND_ONLY{SPAN}) + B{PRETTY BOLD})) + A[href = "abc" title = "i am an anchor" height=123 required]{ANCHOR}';
 	
 	console.log(emmetToNodes(emmet));
 
