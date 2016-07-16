@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>title</title>
+
+</head>
+
+<body>
+
+<script>
+	
+	function emmetToNodes(emmet) {
+		
+		function getOperation(nodes, emmet) {
+			
+			console.log('GET-OPERATION', nodes, emmet);
+			
+			var nextNodes = null;
+			
+			var match = /[\>\+\^\*#\.\[\{]/.exec(emmet);
+			
+			if (!match) // NO MATCH
+				return;
+			
+			switch (match[0]) {
+			case '>': // CHILD
+				
+				console.log('GET-OPERATION CHILD');
+				
+				nextNodes = getElement(emmet);
+				
+				for (var i = 0; i < nodes.length; i++)
+					for (var j = 0; j < nextNodes.length; j++)
+						nodes[i].appendChild(nextNodes[j].cloneNode(true));
+				
+				break;
+				
+			case '+': // SIBLING
+				
+				nextNodes = getElement(emmet);
+				
+				for (var i = 0; i < nextNodes.length; i++)
+					nodes.push(nextNodes[i].cloneNode(true));
+				
+				break;
+			
+			case '^': // CLIMB-UP
+				
+				nextNodes = getElement(emmet);
+				
+				nodes.climbup = nextNodes;
+				
+				break;
+			
+			case '*': // MULTIPLICATION
+				
+				var matchParam = /[0-9]+/.exec(emmet);
+				
+				if (!matchParam)
+					break;
+				
+				var newNodes = [];
+				for (var i = 0; i < nodes.length; i++) {
+					newNodes.push(nodes[i].cloneNode(true));
+				}
+				
+				for (var i = 0; i < parseInt(matchParam[0] - 1); i++)
+					for (var j = 0; j < newNodes.length; j++)
+						nodes.push(newNodes[j].cloneNode(true));
+				
+				emmet = emmet.substring(matchParam.index);
+				
+				var matchParamEnd = /[^0-9]/.exec(emmet);
+				
+				if (!matchParamEnd)
+					break;
+				
+				emmet = emmet.substring(matchParamEnd.index);
+				
+				getOperation(nodes, emmet);
+				
+				break;
+			
+			case '#': // ATTRIBUTE - ID
+				
+				// TODO
+				
+				break;
+			
+			case '.': // ATTRIBUTE - CLASS
+				
+				// TODO
+				
+				break;
+			
+			case '[': // ATTRIBUTE - CUSTOM
+				
+				// TODO
+				
+				break;
+			
+			case '{': // TEXT
+				
+				emmet = emmet.substring(match.index + 1);
+				
+				var textMatch = /[^\}]+/.exec(emmet);
+				
+				emmet = emmet.substring(textMatch.index + textMatch[0].length);
+				
+				if (!textMatch)
+					break;
+				
+				for (var i = 0; i < nodes.length; i++)
+					nodes[i].appendChild(document.createTextNode(textMatch[0]));
+				
+				getOperation(nodes, emmet);
+				
+				break;
+			}
+			
+			// FINSIH OFF CLIMB-UP
+			
+			if (!!nextNodes && !!nextNodes.climbup)
+				for (var i = 0; i < nextNodes.climbup.length; i++)
+					nodes.push(nextNodes.climbup[i].cloneNode(true));
+		}
+		
+		function getElement(emmet) {
+			
+			console.log('GET-ELEMENT', emmet);
+			
+			var nodes = [];
+			
+			var match = /[\(\{a-zA-Z]/.exec(emmet);
+			
+			if (!match)
+				return nodes;
+			
+				
+			if (match[0] == '(') {
+				
+				emmet = emmet.substring(match.index + 1);
+				
+				var counter = 1;
+				var emmet2 = '';
+				
+				while(counter > 0) {
+					
+					var matchBracket = /[\(\)]/.exec(emmet);
+					
+					if (!matchBracket) {
+						counter = 0;
+						continue;
+					}
+					
+					if (matchBracket[0] == '(')
+						counter += 1;
+					else
+						counter -= 1;
+					
+					emmet2 += emmet.substring(0, matchBracket.index + 1);
+					
+					emmet = emmet.substring(matchBracket.index + 1);
+					
+				}
+				
+				emmet2 = emmet2.substring(0, emmet2.length - 1);
+				
+				nodes = getElement(emmet2);
+				
+			} else if (match[0] == '{') {
+				
+				emmet = emmet.substring(match.index);
+				
+				emmet = emmet.substring(1);
+				
+				var textMatch = /[^\}]+/.exec(emmet);
+				
+				if (!textMatch) {
+					
+					emmet = '';
+					
+				} else {
+					
+					emmet = emmet.substring(textMatch.index + textMatch[0].length);
+					nodes = [document.createTextNode(textMatch[0])];
+				}
+				
+			} else {
+				
+				emmet = emmet.substring(match.index);
+				
+				var elementName = '';
+				
+				var matchEnd = /[^a-zA-Z0-9]/.exec(emmet);
+				
+				if (!matchEnd) {
+				
+					elementName = emmet;
+					emmet = '';
+					
+				} else {
+					
+					elementName = emmet.substring(0, matchEnd.index);
+					emmet = emmet.substring(matchEnd.index);
+					
+				}
+				
+				nodes = [document.createElement(elementName)];
+			}
+			
+			getOperation(nodes, emmet);
+			
+			return nodes;
+		}
+		
+		return getElement(emmet);
+	}
+	
+	var emmet = '((DIV > (DIV > SPAN{SPAN}) + B{PRETTY BOLD})) + A{ANCHOR}';
+	
+	console.log(emmetToNodes(emmet));
+
+</script>
+
+
+</body>
+
+</html>
