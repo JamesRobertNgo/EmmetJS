@@ -23,20 +23,22 @@
 
 <div id="container"></div>
 
-<script src="emmet.bk.js"></script>
+<script src="emmet.js"></script>
 <script>
+
 	var emmetStr = document.getElementById('emmetStr');
 	var container = document.getElementById('container');
 
 	document.getElementsByTagName('button')[0].onclick = function() {
 	
-		var newElements = emmet(emmetStr.value);
+		var newElements = emmetJS(emmetStr.value);
 		
 		for (var i = 0; i < newElements.length; i++)
 			container.appendChild(newElements[i]);
 
 		return false;
 	}
+	
 </script>
 
 </body>
