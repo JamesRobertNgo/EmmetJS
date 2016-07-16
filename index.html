@@ -12,38 +12,31 @@
 
 <body>
 
+<h1>EmmetJS</h1>
+
+<p>
+	<label for="emmetStr">Emmet String</label><br>
+	<textarea id="emmetStr">div &gt; div</textarea>
+</p>
+
+<p><button>Attach</button></p>
+
+<div id="container"></div>
+
+<script src="emmet.bk.js"></script>
 <script>
+	var emmetStr = document.getElementById('emmetStr');
+	var container = document.getElementById('container');
+
+	document.getElementsByTagName('button')[0].onclick = function() {
 	
-	var emmet = 'DIV > DIV';
-	
-	function getElement(emmet, startIndex) {
-		if ((startIndex == null) || (startIndex == undefined))
-			startIndex = 0;
+		var newElements = emmet(emmetStr.value);
 		
-		var beginEmmet = emmet.substring(startIndex);
-		var beginMatch = /[a-zA-Z]/.exec(beginEmmet);
-		var beginIndex = beginMatch.index;
-		
-		var endEmmet = emmet.substring(beginEmmet + 1);
-		var endMatch = /[^a-zA-Z]/.exec(endEmmet);
-		var endIndex = endMatch.index;
-		
-		return {
-			beginIndex: beginIndex,
-			endIndex: endIndex,
-			node: document.createElement(emmet.substring(beginIndex, endIndex))
-		}
+		for (var i = 0; i < newElements.length; i++)
+			container.appendChild(newElements[i]);
+
+		return false;
 	}
-	
-	function emmetToNodes(emmet) {
-		
-		var node
-		console.log(getElement(emmet));
-	}
-	
-	console.log('emmet');
-	emmetToNodes(emmet);
-	
 </script>
 
 </body>
