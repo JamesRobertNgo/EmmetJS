@@ -122,8 +122,6 @@ window.emmetJS = function(emmetStr) {
 			
 			// CUSTOM ATTRIBUTE
 			
-			console.log(emmetStr);
-			
 			emmetStr = emmetStr.substring(match.index + 1);
 			
 			var textMatch = /[^\]]+/.exec(emmetStr);
@@ -141,8 +139,6 @@ window.emmetJS = function(emmetStr) {
 			});
 			
 			var attributes = attributesStr.split(' ');
-			
-			console.log(attributes);
 			
 			for (var i = 0; i < nodes.length; i++)
 				for (var j = 0; j < attributes.length; j++) {
@@ -269,8 +265,6 @@ window.emmetJS = function(emmetStr) {
 			
 			// ELEMENTS NODE
 			
-			console.log('ELEMENTS NODE');
-			
 			emmetStr = emmetStr.substring(match.index);
 			
 			var matchNameRegExp = /[a-zA-Z0-9]+/;
@@ -279,8 +273,6 @@ window.emmetJS = function(emmetStr) {
 			emmetStr = emmetStr.substring(matchName.index + matchName[0].length);
 			
 			// MODIFY EMMET STRING IF ELEMENT NAME MATCHES ABBREVIATION
-			
-			console.log(matchName[0].toLowerCase(), emmetJS.abbreviation[matchName[0].toLowerCase()]);
 			
 			if (emmetJS.abbreviation[matchName[0].toLowerCase()]) {
 				
