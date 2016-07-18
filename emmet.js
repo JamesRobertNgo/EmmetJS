@@ -132,13 +132,13 @@ emmet.mod = function(nodes, abbr) {
 	
 	abbr = abbr || [];
 	
-	var nextNodes = null;
-	
 	var match = /[\>\+\^\*#\.\[\{]/.exec(abbr);
 	
 	if (!match) // NO MATCH
 		return;
 		
+	var nextNodes = null;
+	
 	// FORK BASED ON (FIRST) MATCHED
 	
 	switch (match[0]) {
@@ -193,9 +193,7 @@ emmet.mod = function(nodes, abbr) {
 			for (var j = 0; j < copyNodes.length; j++)
 				nodes.push(copyNodes[j].cloneNode(true));
 		
-		abbr = abbr.substring(matchParam.index + matchParam[0].length);
-		
-		emmet.mod(nodes, abbr);
+		emmet.mod(nodes, abbr.substring(matchParam.index + matchParam[0].length));
 		
 		break;
 	
@@ -203,19 +201,16 @@ emmet.mod = function(nodes, abbr) {
 	
 		// ID ATTRIBUTE
 		
-		abbr = abbr.substring(match.index + 1);
+		var idMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
 		
-		var textMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
-		
-		abbr = abbr.substring(textMatch.index + textMatch[0].length);
-		
-		if (!textMatch)
+		if (!idMatch)
 			break;
 		
+		var idStr = idMatch[0].substring(match.index + 1);
 		for (var i = 0; i < nodes.length; i++)
-			nodes[i].setAttribute('id', textMatch[0]);
+			nodes[i].setAttribute('id', idStr);
 		
-		emmet.mod(nodes, abbr);
+		emmet.mod(nodes, abbr.substring(idStr.index + idStr[0].length));
 		
 		break;
 		
@@ -223,25 +218,21 @@ emmet.mod = function(nodes, abbr) {
 		
 		// CLASS ATTRIBUTE
 		
-		abbr = abbr.substring(match.index + 1);
-		
-		var textMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
-		
-		abbr = abbr.substring(textMatch.index + textMatch[0].length);
+		var classMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
 		
 		if (!textMatch)
 			break;
 		
+		var classStr = classMatch[0].substring(match.index + 1);
+		
 		for (var i = 0; i < nodes.length; i++) {
 			
-			var classValue = nodes[i].getAttribute('class') || '';
-			
-			classValue += ((classValue.length > 0) ? ' ' : '' ) + textMatch[0];
+			classStr = ((nodes[i].getAttribute('class')) ? nodes[i].getAttribute('class') + ' ' : '') + classStr;
 			
 			nodes[i].setAttribute('class', classValue);
 		}
-
-		emmet.mod(nodes, abbr);
+		
+		emmet.mod(nodes, abbr.substring(classMatch.index + classMatch[0].length));
 		
 		break;
 		
@@ -279,7 +270,7 @@ emmet.mod = function(nodes, abbr) {
 				nodes[i].setAttribute(attrParts[0], attrParts[1]);
 			}
 		
-		emmet.mod(nodes, abbr.substring(attrMatch.index + 1));
+		emmet.mod(nodes, abbr.substring(attrMatch.index + attrMatch[0].length + 1));
 		
 		break;
 		
@@ -296,7 +287,7 @@ emmet.mod = function(nodes, abbr) {
 			abbr = '';
 		} else {
 			text = textMatch[0].substring(match.index + 1);
-			abbr = abbr.substring(textMatch[0].length + 1);
+			abbr = abbr.substring(textMatch.index + textMatch[0].length + 1);
 		}
 		
 		for (var i = 0; i < nodes.length; i++)
@@ -305,7 +296,6 @@ emmet.mod = function(nodes, abbr) {
 		emmet.mod(nodes, abbr);
 		
 		break;
-		
 	}
 	
 	// MERGE FORK
