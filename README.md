@@ -48,39 +48,68 @@ console.log(emmet.make('uli{listItem} * 3'));
 // Result to <ul><li>listItem</li><li>listItem</li><li>listItem</li></ul>
 ```
 
-
 ## Make Function
 
 ```javascript
-emmet.make(abbr);
+emmet.make(abbr); // Returns an array of Nodes generated
 ```
+
+Works with the emmet.mod() function to generate nodes as specified by the Emmet abbreviation.
+It takes a sing parameter (Emmet abbreviation) and returns an array of Nodes generated.
 
 ## Mod Function
 
 ```javascript
-emmet.make(nodes, abbr);
+emmet.make(nodes, abbr); // Returns an array of Nodes modified
 ```
+
+Works with emmet.make() function to modify an array of nodes as specified by the Emmet abbreviation.
+It takes two parameter: the array of nodes and the Emmet abbreviation, and returns the array of nodes being modified.
+
+This function will seek out several operators:
+- Child operator (>)
+- Sibling operator (+)
+- Parent operator (^)
+- Multiplication operator (*)
+- ID Attribute (#)
+- Class Attribute (.)
+- Custom Attribute ([name="value"...])
+- Text ({text...})
+
+Note: emmet.make also handles text in the instance where the text operator is preceded with another operator.
 
 ## Append
 
 ```javascript
-emmet.append(nodes, abbr);
+emmet.append(nodes, abbr); // Returns an array of child Nodes generated
 ```
+
+A convenience function.
+Appends generated nodes to the nodes supplied in the parameter.
 
 ## Prepend
 
 ```javascript
-emmet.prepend(nodes, abbr);
+emmet.prepend(nodes, abbr); // Returns an array of child Nodes generated
 ```
+
+A convenience function.
+Prepends generated nodes to the nodes supplied in the parameter.
 
 ## Insert Before
 
 ```javascript
-emmet.insertBefore(nodes, abbr);
+emmet.insertBefore(nodes, abbr); // Returns an array of sibling Nodes generated
 ```
+
+A convenience function.
+Insert generated nodes before the nodes supplied in the parameter.
 
 ## Insert After
 
 ```javascript
-emmet.insertAfter(nodes, abbr);
+emmet.insertAfter(nodes, abbr); // Returns an array of sibling Nodes generated
 ```
+
+A convenience function.
+Insert generated nodes after the nodes supplied in the parameter.
