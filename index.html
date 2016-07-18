@@ -16,7 +16,7 @@
 
 <p>
 	<label for="emmetStr">Emmet String</label><br>
-	<textarea id="emmetStr">div &gt; div</textarea>
+	<textarea id="emmetStr">div+div</textarea>
 </p>
 
 <p><button>Attach</button></p>
@@ -31,7 +31,7 @@
 
 	document.getElementsByTagName('button')[0].onclick = function() {
 	
-		var newElements = emmetJS(emmetStr.value);
+		var newElements = emmet.make(emmetStr.value);
 		
 		for (var i = 0; i < newElements.length; i++)
 			container.appendChild(newElements[i]);
