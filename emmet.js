@@ -1,3 +1,11 @@
+/**
+ * Autor: James Robert Huggins Ngo
+ * Date:  2016-07-18
+ *
+ * Repository:     https://github.com/JamesRobertNgo/EmmetJS
+ * Tagged Version: v2.1
+ **/
+
 
 // ==========
 // NAMESPACE
