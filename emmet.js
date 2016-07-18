@@ -11,9 +11,8 @@ window.emmet = {}
 // ==========
 
 emmet.abbreviation = {
-	'a': 'a[href="#"]',
 	'bq': 'blockquote',
-	'img': 'img[alt=""]',
+	'img': 'img[alt=""]'
 };
 
 
