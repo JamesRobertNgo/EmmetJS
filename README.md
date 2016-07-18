@@ -78,7 +78,7 @@ This function will seek out several operators:
 
 Note: emmet.make also handles text in the instance where the text operator is preceded with another operator.
 
-## Append
+## Append Function
 
 ```javascript
 emmet.append(nodes, abbr); // Returns an array of child Nodes generated
@@ -87,7 +87,7 @@ emmet.append(nodes, abbr); // Returns an array of child Nodes generated
 A convenience function.
 Appends generated nodes to the nodes supplied in the parameter.
 
-## Prepend
+## Prepend Function
 
 ```javascript
 emmet.prepend(nodes, abbr); // Returns an array of child Nodes generated
@@ -96,7 +96,7 @@ emmet.prepend(nodes, abbr); // Returns an array of child Nodes generated
 A convenience function.
 Prepends generated nodes to the nodes supplied in the parameter.
 
-## Insert Before
+## Insert Before Function
 
 ```javascript
 emmet.insertBefore(nodes, abbr); // Returns an array of sibling Nodes generated
@@ -105,7 +105,7 @@ emmet.insertBefore(nodes, abbr); // Returns an array of sibling Nodes generated
 A convenience function.
 Insert generated nodes before the nodes supplied in the parameter.
 
-## Insert After
+## Insert After Function
 
 ```javascript
 emmet.insertAfter(nodes, abbr); // Returns an array of sibling Nodes generated
