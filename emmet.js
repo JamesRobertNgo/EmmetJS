@@ -418,3 +418,6 @@ emmet.insertAfter = function(nodes, abbr) {
 	
 	return childNodes;
 };
+
+
+emmet.abbreviation['uli'] = 'ul > li';
