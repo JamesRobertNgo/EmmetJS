@@ -341,7 +341,7 @@ emmet.append = function(nodes, abbr) {
 	
 	for (var i = 0; i < nodes.length; i++)
 		for (var j = 0; j < childNodes.length; j++)
-			nodes[i].appendChild(childNodes[j]);
+			nodes[i].appendChild(childNodes[j].cloneNode(true));
 	
 	return childNodes;
 };
@@ -365,7 +365,7 @@ emmet.prepend = function(nodes, abbr) {
 	for (var i = 0; i < nodes.length; i++) {
 		var firstChild = nodes[i].firstChild;
 		for (var j = 0; j < childNodes.length; j++)
-			nodes[i].insertBefore(childNodes[j], firstChild);
+			nodes[i].insertBefore(childNodes[j].cloneNode(true), firstChild);
 	}
 	
 	return childNodes;
@@ -385,13 +385,13 @@ emmet.insertBefore = function(nodes, abbr) {
 	if (!nodes.length)
 		nodes = [nodes];
 	
-	var childNodes = emmet.make(abbr);
+	var siblingNodes = emmet.make(abbr);
 	
 	for (var i = 0; i < nodes.length; i++)
-		for (var j = 0; j < childNodes.length; j++)
-			nodes[i].parentNode.insertBefore(childNodes[j], nodes[i]);
+		for (var j = 0; j < siblingNodes.length; j++)
+			nodes[i].parentNode.insertBefore(siblingNodes[j].cloneNode(true), nodes[i]);
 	
-	return childNodes;
+	return siblingNodes;
 };
 
 
@@ -408,16 +408,13 @@ emmet.insertAfter = function(nodes, abbr) {
 	if (!nodes.length)
 		nodes = [nodes];
 	
-	var childNodes = emmet.make(abbr);
+	var siblingNodes = emmet.make(abbr);
 	
 	for (var i = 0; i < nodes.length; i++) {
 		var siblingChild = nodes[i].nextSibling;
-		for (var j = 0; j < childNodes.length; j++)
-			nodes[i].parentNode.insertBefore(childNodes[j], siblingChild);
+		for (var j = 0; j < siblingNodes.length; j++)
+			nodes[i].parentNode.insertBefore(siblingNodes[j].cloneNode(true), siblingChild);
 	}
 	
-	return childNodes;
+	return siblingNodes;
 };
-
-
-emmet.abbreviation['uli'] = 'ul > li';
