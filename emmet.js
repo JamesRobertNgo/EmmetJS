@@ -320,4 +320,102 @@ emmet.mod = function(nodes, abbr) {
 		
 		delete nextNodes.climbup;
 	}
+	
+	return nodes;
+};
+
+
+// ==========
+// APPEND
+// ==========
+
+emmet.append = function(nodes, abbr) {
+	
+	abbr = abbr || '';
+	
+	nodes = nodes || [];
+	
+	if (!nodes.length)
+		nodes = [nodes];
+	
+	var childNodes = emmet.make(abbr);
+	
+	for (var i = 0; i < nodes.length; i++)
+		for (var j = 0; j < childNodes.length; j++)
+			nodes[i].appendChild(childNodes[j]);
+	
+	return childNodes;
+};
+
+
+// ==========
+// PREPEND
+// ==========
+
+emmet.prepend = function(nodes, abbr) {
+	
+	abbr = abbr || '';
+	
+	nodes = nodes || [];
+	
+	if (!nodes.length)
+		nodes = [nodes];
+	
+	var childNodes = emmet.make(abbr);
+	
+	for (var i = 0; i < nodes.length; i++) {
+		var firstChild = nodes[i].firstChild;
+		for (var j = 0; j < childNodes.length; j++)
+			nodes[i].insertBefore(childNodes[j], firstChild);
+	}
+	
+	return childNodes;
+};
+
+
+// ==========
+// INSERT BEFORE
+// ==========
+
+emmet.insertBefore = function(nodes, abbr) {
+	
+	abbr = abbr || '';
+	
+	nodes = nodes || [];
+	
+	if (!nodes.length)
+		nodes = [nodes];
+	
+	var childNodes = emmet.make(abbr);
+	
+	for (var i = 0; i < nodes.length; i++)
+		for (var j = 0; j < childNodes.length; j++)
+			nodes[i].parentNode.insertBefore(childNodes[j], nodes[i]);
+	
+	return childNodes;
+};
+
+
+// ==========
+// INSERT AFTER
+// ==========
+
+emmet.insertAfter = function(nodes, abbr) {
+	
+	abbr = abbr || '';
+	
+	nodes = nodes || [];
+	
+	if (!nodes.length)
+		nodes = [nodes];
+	
+	var childNodes = emmet.make(abbr);
+	
+	for (var i = 0; i < nodes.length; i++) {
+		var siblingChild = nodes[i].nextSibling;
+		for (var j = 0; j < childNodes.length; j++)
+			nodes[i].parentNode.insertBefore(childNodes[j], siblingChild);
+	}
+	
+	return childNodes;
 };
