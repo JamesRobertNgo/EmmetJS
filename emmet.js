@@ -27,7 +27,7 @@ emmet.make = function(abbr) {
 	
 	var nodes = [];
 	
-	var match = /[\(\{a-zA-Z]/.exec(abbr);
+	var match = /[#\.\(\{a-zA-Z]/.exec(abbr);
 	
 	if (!match)
 		return nodes;
@@ -35,6 +35,15 @@ emmet.make = function(abbr) {
 	// FORK BASE ON (FIRST) MATCHED
 	
 	switch (match[0]) {
+	case '#':
+	case '.':
+		
+		// TODO - MAKE ELEMENT BASED ON PARENT ELEMENT
+		
+		nodes.push(document.createElement('div'));
+		
+		break;
+		
 	case '(':
 		
 		// GROUP
@@ -101,6 +110,7 @@ emmet.make = function(abbr) {
 		// MODIFY EMMET STRING IF ELEMENT NAME MATCHES ABBREVIATION
 		
 		var abbrMod = emmet.abbreviation[matchName[0].toLowerCase()];
+		
 		if (abbrMod) {
 			abbr = abbrMod + abbr.substring(matchName.index + matchName[0].length);
 			matchName = /[a-zA-Z0-9]+/.exec(abbr);
@@ -125,6 +135,8 @@ emmet.make = function(abbr) {
 
 emmet.mod = function(nodes, abbr) {
 	
+	console.log('emmet.mod', nodes, abbr);
+	
 	nodes = nodes || [];
 	
 	if (!nodes.length)
@@ -133,6 +145,8 @@ emmet.mod = function(nodes, abbr) {
 	abbr = abbr || [];
 	
 	var match = /[\>\+\^\*#\.\[\{]/.exec(abbr);
+	
+	console.log('match', match);
 	
 	if (!match) // NO MATCH
 		return;
@@ -198,7 +212,7 @@ emmet.mod = function(nodes, abbr) {
 		break;
 	
 	case '#':
-	
+		
 		// ID ATTRIBUTE
 		
 		var idMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
@@ -206,11 +220,12 @@ emmet.mod = function(nodes, abbr) {
 		if (!idMatch)
 			break;
 		
-		var idStr = idMatch[0].substring(match.index + 1);
+		var idStr = idMatch[0];
+		
 		for (var i = 0; i < nodes.length; i++)
 			nodes[i].setAttribute('id', idStr);
 		
-		emmet.mod(nodes, abbr.substring(idStr.index + idStr[0].length));
+		emmet.mod(nodes, abbr.substring(idMatch.index + idMatch[0].length));
 		
 		break;
 		
@@ -220,17 +235,13 @@ emmet.mod = function(nodes, abbr) {
 		
 		var classMatch = /[a-zA-Z0-9_\-]+/.exec(abbr);
 		
-		if (!textMatch)
+		if (!classMatch)
 			break;
 		
-		var classStr = classMatch[0].substring(match.index + 1);
+		var classStr = classMatch[0];
 		
-		for (var i = 0; i < nodes.length; i++) {
-			
-			classStr = ((nodes[i].getAttribute('class')) ? nodes[i].getAttribute('class') + ' ' : '') + classStr;
-			
-			nodes[i].setAttribute('class', classValue);
-		}
+		for (var i = 0; i < nodes.length; i++)
+			nodes[i].setAttribute('class', ((nodes[i].getAttribute('class')) ? nodes[i].getAttribute('class') + ' ' : '') + classStr);
 		
 		emmet.mod(nodes, abbr.substring(classMatch.index + classMatch[0].length));
 		

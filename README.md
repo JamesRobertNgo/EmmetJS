@@ -1,3 +1,9 @@
 # EmmetJS
 
-A JavaScript implementation of [Emmet](http://emmet.io) based on the Emmet [documentation](http://docs.emmet.io).
+A JavaScript nodes generator and nodes modifier, through the use of [Emmet abbreviations](http://emmet.io).
+
+## Make Function
+
+## Mod Function
+
+## Abbreviation Configuration
